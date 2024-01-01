@@ -1,0 +1,54 @@
+{
+    "name": "@hamitzor/rtaudio.js",
+    "version": "1.0.0",
+    "description": "RtAudio bindings for Node",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/hamitzor/rtaudio.js.git"
+    },
+    "author": "Hamit Can Zor (thenrerise@gmail.com)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/hamitzor/rtaudio.js/issues"
+    },
+    "homepage": "https://github.com/hamitzor/rtaudio.js#readme",
+    "engines": {
+        "node": ">= 14.17.3"
+    },
+    "binary": {
+        "napi_versions": [
+            4
+        ]
+    },
+    "main": "index.js",
+    "types": "index.d.ts",
+    "files": [
+        "src",
+        "vendor",
+        "LICENSE",
+        "README.md",
+        "CMakeLists.txt",
+        "index.js",
+        "index.d.ts"
+    ],
+    "packageManager": "yarn@4.0.2",
+    "scripts": {
+        "build:debug": "cmake-js --debug",
+        "build": "cmake-js rebuild",
+        "install": "prebuild-install -t 4 -r napi || cmake-js rebuild",
+        "prebuild-release-napi": "prebuild --backend cmake-js -t 4 -r napi --include-regex '\\.(node|dll|so)$' --verbose",
+        "prebuild-release-electron": "prebuild --backend cmake-js -t 11.0.0 -t 12.0.0 -t 13.0.0 -t 14.0.0 -t 15.0.0 -t 14.0.2 -t 15.0.0 -t 16.0.0 -t 17.0.0 -t 18.0.0 -t 19.0.0 -t 20.0.0 -t 21.0.0 -t 22.0.0 -t 23.0.0 -t 24.0.0 -t 25.0.0 -t 26.0.0 -t 27.0.0 -t 28.0.0 -r electron --include-regex '\\.(node|dll|so)$' --verbose"
+    },
+    "dependencies": {
+        "bindings": "^1.5.0",
+        "cmake-js": "^7.2.1",
+        "node-addon-api": "^7.0.0",
+        "prebuild": "^12.1.0",
+        "prebuild-install": "^7.1.1"
+    },
+    "devDependencies": {
+        "@types/bindings": "^1.5.5",
+        "@types/node": "^18.19.0",
+        "node-abi": "^3.52.0"
+    }
+}

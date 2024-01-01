@@ -320,6 +320,7 @@ export declare class RtAudio {
 
   /**
    * A function that closes a stream and frees any associated stream memory.
+   * 
    * If a stream is not open, an RTAUDIO_WARNING will be passed to the
    * user-provided errorCallback function (or otherwise printed to stderr).
    */
@@ -327,6 +328,7 @@ export declare class RtAudio {
 
   /**
    * A function that starts a stream.
+   * 
    * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
    * processing. An RTAUDIO_WARNING is returned if a stream is not open
    * or is already running.
@@ -335,16 +337,18 @@ export declare class RtAudio {
 
   /**
    * Stop a stream, allowing any samples remaining in the output queue to be played.
+   * 
    * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
-   * processing.  An RTAUDIO_WARNING is returned if a stream is not
+   * processing. An RTAUDIO_WARNING is returned if a stream is not
    * open or is already stopped.
    */
   stopStream: () => void
 
   /**
    * Stop a stream, discarding any samples remaining in the input/output queue.
+   * 
    * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
-   * processing.  An RTAUDIO_WARNING is returned if a stream is not
+   * processing. An RTAUDIO_WARNING is returned if a stream is not
    * open or is already stopped.
    */
   abortStream: () => void
@@ -441,10 +445,6 @@ export declare class RtAudio {
 
   /**
    * A static function to determine the available compiled audio APIs.
-   * 
-   * The values returned in the std::vector can be compared against
-   * the enumerated list values.  Note that there can be more than one
-   * API compiled for certain operating systems.
    */
   static getCompiledApi: () => RtAudioApi[]
 

@@ -8,7 +8,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@hamitzor/rtaudio.js">
-    <img src="https://badge.fury.io/js/@hamitzor%2Frtaudio.js.svg"
+    <img src="https://img.shields.io/badge/1.0.4-green?style=flat&label=npm%20package"
          alt="NPM">
   </a>
 </p>

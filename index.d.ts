@@ -226,6 +226,7 @@ export declare class RtAudio {
   ) => void
   closeStream: () => void
   startStream: () => void
+  stopStream: () => void
   abortStream: () => void
   getDevices: () => DeviceInfo[]
   getDefaultInputDevice: () => number

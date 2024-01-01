@@ -21,6 +21,7 @@ public:
   Napi::Value openStream(const Napi::CallbackInfo &info);
   void closeStream(const Napi::CallbackInfo &info);
   void startStream(const Napi::CallbackInfo &info);
+  void stopStream(const Napi::CallbackInfo &info);
   void abortStream(const Napi::CallbackInfo &info);
   Napi::Value getDevices(const Napi::CallbackInfo &info);
   Napi::Value getDefaultInputDevice(const Napi::CallbackInfo &info);

@@ -13,6 +13,7 @@ Napi::Object NodeRtAudio::Init(Napi::Env env, Napi::Object exports)
           InstanceMethod<&NodeRtAudio::openStream>("openStream", static_cast<napi_property_attributes>(napi_default)),
           InstanceMethod<&NodeRtAudio::closeStream>("closeStream", static_cast<napi_property_attributes>(napi_default)),
           InstanceMethod<&NodeRtAudio::startStream>("startStream", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::stopStream>("stopStream", static_cast<napi_property_attributes>(napi_default)),
           InstanceMethod<&NodeRtAudio::abortStream>("abortStream", static_cast<napi_property_attributes>(napi_default)),
           InstanceMethod<&NodeRtAudio::getDevices>("getDevices", static_cast<napi_property_attributes>(napi_default)),
           InstanceMethod<&NodeRtAudio::getDefaultInputDevice>("getDefaultInputDevice", static_cast<napi_property_attributes>(napi_default)),
@@ -345,14 +346,17 @@ Napi::Value NodeRtAudio::openStream(const Napi::CallbackInfo &info)
 void NodeRtAudio::closeStream(const Napi::CallbackInfo &info)
 {
   jsRef.Unref();
-
-  RtAudio::abortStream();
   RtAudio::closeStream();
 }
 
 void NodeRtAudio::startStream(const Napi::CallbackInfo &info)
 {
   RtAudio::startStream();
+}
+
+void NodeRtAudio::stopStream(const Napi::CallbackInfo &info)
+{
+  RtAudio::stopStream();
 }
 
 void NodeRtAudio::abortStream(const Napi::CallbackInfo &info)

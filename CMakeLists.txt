@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
+
 if(UNIX AND NOT APPLE)
   set(LINUX TRUE)
 endif()
@@ -14,7 +15,7 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES} ${CMAKE_JS_SRC})
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 
 if(WIN32)
-  set(RTAUDIO_API_DS ON)
+  option(RTAUDIO_API_DS "" ON)
   set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX "-win32.node")
 endif()
 

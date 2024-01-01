@@ -157,3 +157,16 @@ module.exports.RtAudioErrorType = {
   /** A thread error occurred. */
   THREAD_ERROR: 10,
 }
+
+/** 
+ * Notification of a stream over- or underflow is indicated by a
+ * non-zero stream \c status argument in the RtAudioCallback function.
+ * The stream status can be one of the following two options,
+ * depending on whether the stream is open for output and/or input:
+ */
+export const RtAudioStreamStatus = {
+  /** Input data was discarded because of an overflow condition at the driver. */
+  RTAUDIO_INPUT_OVERFLOW: 1,
+  /** The output buffer ran low, likely producing a break in the output sound. */
+  RTAUDIO_OUTPUT_UNDERFLOW: 2,
+}

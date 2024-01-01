@@ -46,7 +46,7 @@ or
 yarn add @hamitzor/rtaudio.js
 ```
 
-As simple as that, no additional library/software required for installation. If you run into trouble during installation, don't hesitate to create an issue at <a href="https://github.com/hamitzor/node-audio/issues">Github</a>.
+As simple as that, no additional library/software required for installation. If you run into trouble during installation, don't hesitate to create an issue at <a href="https://github.com/hamitzor/rtaudio.js/issues">Github</a>.
 
 > **Note**
 > Only Windows and Linux are supported at the moment.
@@ -57,4 +57,4 @@ This packages uses the C++ library named rtaudio under the hood. To check it out
 
 ## License
 
-<a href="https://raw.githubusercontent.com/hamitzor/node-audio/master/LICENSE">MIT</a>
+<a href="https://raw.githubusercontent.com/hamitzor/rtaudio.js/master/LICENSE">MIT</a>

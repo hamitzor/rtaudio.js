@@ -17,29 +17,28 @@ public:
 
 public:
   void setErrorCallback(const Napi::CallbackInfo &info);
-  void enableWarnings(const Napi::CallbackInfo &info);
-  void disableWarnings(const Napi::CallbackInfo &info);
-  Napi::Value open(const Napi::CallbackInfo &info);
-  void close(const Napi::CallbackInfo &info);
-  void start(const Napi::CallbackInfo &info);
-  void abort(const Napi::CallbackInfo &info);
-
+  void showWarnings(const Napi::CallbackInfo &info);
+  Napi::Value openStream(const Napi::CallbackInfo &info);
+  void closeStream(const Napi::CallbackInfo &info);
+  void startStream(const Napi::CallbackInfo &info);
+  void abortStream(const Napi::CallbackInfo &info);
   Napi::Value getDevices(const Napi::CallbackInfo &info);
   Napi::Value getDefaultInputDevice(const Napi::CallbackInfo &info);
   Napi::Value getDefaultOutputDevice(const Napi::CallbackInfo &info);
-  Napi::Value isOpen(const Napi::CallbackInfo &info);
-  Napi::Value isRunning(const Napi::CallbackInfo &info);
+  Napi::Value isStreamOpen(const Napi::CallbackInfo &info);
+  Napi::Value isStreamRunning(const Napi::CallbackInfo &info);
   Napi::Value getCurrentApi(const Napi::CallbackInfo &info);
-  Napi::Value getLatency(const Napi::CallbackInfo &info);
-  Napi::Value getSampleRate(const Napi::CallbackInfo &info);
-  Napi::Value getTime(const Napi::CallbackInfo &info);
+  Napi::Value getStreamLatency(const Napi::CallbackInfo &info);
+  Napi::Value getStreamSampleRate(const Napi::CallbackInfo &info);
+  Napi::Value getStreamTime(const Napi::CallbackInfo &info);
+  void setStreamTime(const Napi::CallbackInfo &info);
+  Napi::Value getErrorText(const Napi::CallbackInfo &info);
 
 public:
   static Napi::Value getVersion(const Napi::CallbackInfo &info);
-
   static Napi::Value getApiDisplayName(const Napi::CallbackInfo &info);
   static Napi::Value getApiName(const Napi::CallbackInfo &info);
-  static Napi::Value getCompiledApis(const Napi::CallbackInfo &info);
+  static Napi::Value getCompiledApi(const Napi::CallbackInfo &info);
 
 private:
   static void parseOutputParams(Napi::Env env, const Napi::Value &val, RtAudio::StreamParameters *params);

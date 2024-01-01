@@ -168,21 +168,9 @@ export declare class NodeRtAudio {
   constructor()
   constructor(api: LowLevelAudioApi)
 
-  get devices(): DeviceInfo[]
-  get defaultInputDevice(): number
-  get defaultOutputDevice(): number
-  get isDestroyed(): boolean
-  get isRunning(): boolean
-  get isOpen(): boolean
-  get currentApi(): number
-  get latency(): number
-  get sampleRate(): number
-  get time(): number
-
   setErrorCallback: (errorCallback: (errType: ErrorType, message: string) => void) => void
-  enableWarnings: () => void
-  disableWarnings: () => void
-  open: (
+  showWarnings: (v: boolean) => void
+  openStream: (
     outputParameters: StreamParameters | null,
     inputParameters: StreamParameters | null,
     format: PCMFormat,
@@ -191,13 +179,23 @@ export declare class NodeRtAudio {
     options: StreamOptions | null,
     callback: (output: Uint8Array, input: Uint8Array, nFrames: number, streamTime: number, status: StreamStatus) => void,
   ) => void
-  close: () => void
-  start: () => void
-  abort: () => void
+  closeStream: () => void
+  startStream: () => void
+  abortStream: () => void
+  getDevices: () => DeviceInfo[]
+  getDefaultInputDevice: () => number
+  getDefaultOutputDevice: () => number
+  isStreamOpen: () => boolean
+  isStreamRunning: () => boolean
+  getCurrentApi: () => number
+  getStreamLatency: () => number
+  getStreamSampleRate: () => number
+  getStreamTime: () => number
+  setStreamTime: () => number
+  getErrorText: () => string
 
-  static rtAudioVersion: string
-  static availableApiList: LowLevelAudioApi[]
-
+  static getVersion: () => string
+  static getCompiledApi: () => LowLevelAudioApi[]
   static getApiDisplayName(api: LowLevelAudioApi): string
   static getApiName(api: LowLevelAudioApi): string
 }

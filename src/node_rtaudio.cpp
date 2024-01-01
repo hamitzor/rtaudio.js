@@ -9,26 +9,24 @@ Napi::Object NodeRtAudio::Init(Napi::Env env, Napi::Object exports)
       "NodeRtAudio",
       {
           InstanceMethod<&NodeRtAudio::setErrorCallback>("setErrorCallback", static_cast<napi_property_attributes>(napi_default)),
-          InstanceMethod<&NodeRtAudio::enableWarnings>("enableWarnings", static_cast<napi_property_attributes>(napi_default)),
-          InstanceMethod<&NodeRtAudio::disableWarnings>("disableWarnings", static_cast<napi_property_attributes>(napi_default)),
-          InstanceMethod<&NodeRtAudio::open>("open", static_cast<napi_property_attributes>(napi_default)),
-          InstanceMethod<&NodeRtAudio::close>("close", static_cast<napi_property_attributes>(napi_default)),
-          InstanceMethod<&NodeRtAudio::start>("start", static_cast<napi_property_attributes>(napi_default)),
-          InstanceMethod<&NodeRtAudio::abort>("abort", static_cast<napi_property_attributes>(napi_default)),
-
-          InstanceAccessor<&NodeRtAudio::getDevices>("devices", static_cast<napi_property_attributes>(napi_default)),
-          InstanceAccessor<&NodeRtAudio::getDefaultInputDevice>("defaultInputDevice", static_cast<napi_property_attributes>(napi_default)),
-          InstanceAccessor<&NodeRtAudio::getDefaultOutputDevice>("defaultOutputDevice", static_cast<napi_property_attributes>(napi_default)),
-          InstanceAccessor<&NodeRtAudio::isOpen>("isOpen", static_cast<napi_property_attributes>(napi_default)),
-          InstanceAccessor<&NodeRtAudio::isRunning>("isRunning", static_cast<napi_property_attributes>(napi_default)),
-          InstanceAccessor<&NodeRtAudio::getCurrentApi>("currentApi", static_cast<napi_property_attributes>(napi_default)),
-          InstanceAccessor<&NodeRtAudio::getLatency>("latency", static_cast<napi_property_attributes>(napi_default)),
-          InstanceAccessor<&NodeRtAudio::getSampleRate>("sampleRate", static_cast<napi_property_attributes>(napi_default)),
-          InstanceAccessor<&NodeRtAudio::getTime>("time", static_cast<napi_property_attributes>(napi_default)),
-
-          StaticAccessor<&NodeRtAudio::getVersion>("rtAudioVersion", static_cast<napi_property_attributes>(napi_default)),
-          StaticAccessor<&NodeRtAudio::getCompiledApis>("availableApiList", static_cast<napi_property_attributes>(napi_default)),
-
+          InstanceMethod<&NodeRtAudio::showWarnings>("showWarnings", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::openStream>("openStream", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::closeStream>("closeStream", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::startStream>("startStream", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::abortStream>("abortStream", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::getDevices>("getDevices", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::getDefaultInputDevice>("getDefaultInputDevice", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::getDefaultOutputDevice>("getDefaultOutputDevice", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::isStreamOpen>("isStreamOpen", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::isStreamRunning>("isStreamRunning", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::getCurrentApi>("getCurrentApi", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::getStreamLatency>("getStreamLatency", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::getStreamSampleRate>("getStreamSampleRate", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::getStreamTime>("getStreamTime", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::setStreamTime>("setStreamTime", static_cast<napi_property_attributes>(napi_default)),
+          InstanceMethod<&NodeRtAudio::getErrorText>("getErrorText", static_cast<napi_property_attributes>(napi_default)),
+          StaticMethod<&NodeRtAudio::getVersion>("getVersion", static_cast<napi_property_attributes>(napi_default)),
+          StaticMethod<&NodeRtAudio::getCompiledApi>("getCompiledApi", static_cast<napi_property_attributes>(napi_default)),
           StaticMethod<&NodeRtAudio::getApiDisplayName>("getApiDisplayName", static_cast<napi_property_attributes>(napi_default)),
           StaticMethod<&NodeRtAudio::getApiName>("getApiName", static_cast<napi_property_attributes>(napi_default)),
       });
@@ -116,14 +114,14 @@ Napi::Value NodeRtAudio::getDefaultOutputDevice(const Napi::CallbackInfo &info)
   return Napi::Number::New(info.Env(), RtAudio::getDefaultOutputDevice());
 }
 
-Napi::Value NodeRtAudio::isOpen(const Napi::CallbackInfo &info)
+Napi::Value NodeRtAudio::isStreamOpen(const Napi::CallbackInfo &info)
 {
-  return Napi::Boolean::New(info.Env(), this->isStreamOpen());
+  return Napi::Boolean::New(info.Env(), RtAudio::isStreamOpen());
 }
 
-Napi::Value NodeRtAudio::isRunning(const Napi::CallbackInfo &info)
+Napi::Value NodeRtAudio::isStreamRunning(const Napi::CallbackInfo &info)
 {
-  return Napi::Boolean::New(info.Env(), this->isStreamRunning());
+  return Napi::Boolean::New(info.Env(), RtAudio::isStreamRunning());
 }
 
 Napi::Value NodeRtAudio::getCurrentApi(const Napi::CallbackInfo &info)
@@ -131,19 +129,34 @@ Napi::Value NodeRtAudio::getCurrentApi(const Napi::CallbackInfo &info)
   return Napi::Number::New(info.Env(), RtAudio::getCurrentApi());
 }
 
-Napi::Value NodeRtAudio::getLatency(const Napi::CallbackInfo &info)
+Napi::Value NodeRtAudio::getStreamLatency(const Napi::CallbackInfo &info)
 {
-  return Napi::Number::New(info.Env(), this->getStreamLatency());
+  return Napi::Number::New(info.Env(), RtAudio::getStreamLatency());
 }
 
-Napi::Value NodeRtAudio::getSampleRate(const Napi::CallbackInfo &info)
+Napi::Value NodeRtAudio::getStreamSampleRate(const Napi::CallbackInfo &info)
 {
-  return Napi::Number::New(info.Env(), this->getStreamSampleRate());
+  return Napi::Number::New(info.Env(), RtAudio::getStreamSampleRate());
 }
 
-Napi::Value NodeRtAudio::getTime(const Napi::CallbackInfo &info)
+Napi::Value NodeRtAudio::getStreamTime(const Napi::CallbackInfo &info)
 {
-  return Napi::Number::New(info.Env(), this->getStreamTime());
+  return Napi::Number::New(info.Env(), RtAudio::getStreamTime());
+}
+
+void NodeRtAudio::setStreamTime(const Napi::CallbackInfo &info)
+{
+  if (!info[0].IsNumber())
+  {
+    throw Napi::TypeError::New(info.Env(), "time should be a number.");
+  }
+
+  RtAudio::setStreamTime(info[0].As<Napi::Number>().DoubleValue());
+}
+
+Napi::Value NodeRtAudio::getErrorText(const Napi::CallbackInfo &info)
+{
+  return Napi::String::New(info.Env(), RtAudio::getErrorText());
 }
 
 void NodeRtAudio::setErrorCallback(const Napi::CallbackInfo &info)
@@ -176,17 +189,17 @@ void NodeRtAudio::setErrorCallback(const Napi::CallbackInfo &info)
   RtAudio::setErrorCallback(errorCallback);
 }
 
-void NodeRtAudio::enableWarnings(const Napi::CallbackInfo &info)
+void NodeRtAudio::showWarnings(const Napi::CallbackInfo &info)
 {
-  this->showWarnings(true);
+  if (!info[0].IsBoolean())
+  {
+    throw Napi::TypeError::New(info.Env(), "value should be a boolean.");
+  }
+
+  RtAudio::showWarnings(info[0].As<Napi::Boolean>());
 }
 
-void NodeRtAudio::disableWarnings(const Napi::CallbackInfo &info)
-{
-  this->showWarnings(false);
-}
-
-Napi::Value NodeRtAudio::open(const Napi::CallbackInfo &info)
+Napi::Value NodeRtAudio::openStream(const Napi::CallbackInfo &info)
 {
   jsRef = Napi::ObjectReference::New(this->Value(), 1);
 
@@ -195,7 +208,7 @@ Napi::Value NodeRtAudio::open(const Napi::CallbackInfo &info)
   RtAudio::StreamParameters *inputParamsPtr = nullptr;
   RtAudio::StreamOptions *optionsPtr = nullptr;
 
-  if (this->isStreamOpen())
+  if (RtAudio::isStreamOpen())
     throw Napi::Error::New(env, "Stream already open");
 
   Napi::Function cb;
@@ -316,7 +329,7 @@ Napi::Value NodeRtAudio::open(const Napi::CallbackInfo &info)
         return 0;
       }};
 
-  this->openStream(
+  RtAudio::openStream(
       outputParamsPtr,
       inputParamsPtr,
       this->format,
@@ -329,22 +342,22 @@ Napi::Value NodeRtAudio::open(const Napi::CallbackInfo &info)
   return Napi::Number::New(env, this->bufferFrames);
 }
 
-void NodeRtAudio::close(const Napi::CallbackInfo &info)
+void NodeRtAudio::closeStream(const Napi::CallbackInfo &info)
 {
   jsRef.Unref();
 
-  this->abortStream();
-  this->closeStream();
+  RtAudio::abortStream();
+  RtAudio::closeStream();
 }
 
-void NodeRtAudio::start(const Napi::CallbackInfo &info)
+void NodeRtAudio::startStream(const Napi::CallbackInfo &info)
 {
-  this->startStream();
+  RtAudio::startStream();
 }
 
-void NodeRtAudio::abort(const Napi::CallbackInfo &info)
+void NodeRtAudio::abortStream(const Napi::CallbackInfo &info)
 {
-  this->abortStream();
+  RtAudio::abortStream();
 }
 
 Napi::Value NodeRtAudio::getApiDisplayName(const Napi::CallbackInfo &info)
@@ -362,7 +375,7 @@ Napi::Value NodeRtAudio::getVersion(const Napi::CallbackInfo &info)
   return Napi::String::New(info.Env(), RtAudio::getVersion());
 }
 
-Napi::Value NodeRtAudio::getCompiledApis(const Napi::CallbackInfo &info)
+Napi::Value NodeRtAudio::getCompiledApi(const Napi::CallbackInfo &info)
 {
   std::vector<RtAudio::Api> apis;
 

@@ -22,8 +22,8 @@ if (process.platform === 'win32') {
 
 module.exports.RtAudio = RtAudio
 
-/** The native API to use */
-module.exports.LowLevelAudioApi = {
+/** Audio API specifier arguments */
+module.exports.RtAudioApi = {
   /** Search for a working compiled API. */
   UNSPECIFIED: 0,
 
@@ -43,8 +43,18 @@ module.exports.LowLevelAudioApi = {
   WINDOWS_DS: 8,
 }
 
-/** The format of the PCM data. */
-module.exports.PCMFormat = {
+/** 
+ * RtAudio data format type.
+ *
+ * Support for signed integers and floats.  Audio data fed to/from an
+ * RtAudio stream is assumed to ALWAYS be in host byte order.  The
+ * internal routines will automatically take care of any necessary
+ * byte-swapping between the host format and the soundcard.  Thus,
+ * endian-ness is not a concern in the following format definitions.
+ * Note that there are no range checks for floating-point values that
+ * extend beyond plus/minus 1.0.
+ */
+module.exports.RtAudioFormat = {
   /** 8-bit signed integer. */
   RTAUDIO_SINT8: 0x1,
 
@@ -61,8 +71,38 @@ module.exports.PCMFormat = {
   RTAUDIO_FLOAT64: 0x20,
 }
 
-/** Flags that change the default stream behavior */
-module.exports.StreamFlag = {
+/** 
+ * The following flags can be OR'ed together to allow a client to
+ * make changes to the default stream behavior.
+ * 
+ * By default, RtAudio streams pass and receive audio data from the
+ * client in an interleaved format.  By passing the
+ * RTAUDIO_NONINTERLEAVED flag to the openStream() function, audio
+ * data will instead be presented in non-interleaved buffers.  In
+ * this case, each buffer argument in the RtAudioCallback function
+ * will point to a single array of data, with \c nFrames samples for
+ * each channel concatenated back-to-back.  For example, the first
+ * sample of data for the second channel would be located at index \c
+ * nFrames (assuming the \c buffer pointer was recast to the correct
+ * data type for the stream).
+ * 
+ * Certain audio APIs offer a number of parameters that influence the
+ * I/O latency of a stream.  By default, RtAudio will attempt to set
+ * these parameters internally for robust (glitch-free) performance
+ * (though some APIs, like Windows DirectSound, make this difficult).
+ * By passing the RTAUDIO_MINIMIZE_LATENCY flag to the openStream()
+ * function, internal stream settings will be influenced in an attempt
+ * to minimize stream latency, though possibly at the expense of stream
+ * performance.
+ * 
+ * If the RTAUDIO_HOG_DEVICE flag is set, RtAudio will attempt to
+ * open the input and/or output stream device(s) for exclusive use.
+ * Note that this is not possible with all supported audio APIs.
+ * 
+ * If the RTAUDIO_SCHEDULE_REALTIME flag is set, RtAudio will attempt 
+ * to select realtime scheduling (round-robin) for the callback thread.
+ */
+module.exports.RtAudioStreamFlags = {
   /** Use non-interleaved buffers (default = interleaved). */
   RTAUDIO_NONINTERLEAVED: 0x1,
 
@@ -83,7 +123,7 @@ module.exports.StreamFlag = {
 }
 
 /** RtAudio error types */
-module.exports.ErrorType = {
+module.exports.RtAudioErrorType = {
   /** A non-critical error. */
   WARNING: 0,
 

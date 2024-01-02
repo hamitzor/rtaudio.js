@@ -1,3 +1,238 @@
+/**
+ * The RtAudio class.
+ * 
+ * If an API argument is specified but that API isn't supported,
+ * a warning is issued and an instance of an available API
+ * is created. If available API is found, the routine will abort
+ * If no API argument is specified and multiple API
+ * support has been compiled, the default order of use is ALSA,
+ * (Linux systems) and WASAPI, DS (Windows systems).
+ */
+export declare class RtAudio {
+  /**
+   * Create a new RtAudio instance
+   */
+  constructor()
+
+  /**
+   * Create a new RtAudio instance
+   * 
+   * @param api api to utilize. If omitted, an available one will be picked.
+   */
+  constructor(api: RtAudioApi)
+
+  /** Set a client-defined function that will be invoked when an error or warning occurs 
+   * 
+   * @param errorCallback the callback
+  */
+  setErrorCallback(errorCallback: (errType: RtAudioErrorType, message: string) => void): void
+
+  /**
+   * Specify whether warning messages should be output or not.
+   *
+   * The default behaviour is for warning messages to be output,
+   * either to a client-defined error callback function (if specified)
+   * or to stderr.
+   * 
+   * @param value boolean value to use
+   */
+  showWarnings(value: boolean): void
+
+  /**
+   * A function for opening a stream with the specified parameters.
+   * 
+   * @param outputParameters Specifies output stream parameters to use
+   * when opening a stream, including a device ID, number of channels,
+   * and starting channel number.  For input-only streams, this
+   * argument should be null.
+   * @param inputParameters Specifies input stream parameters to use
+   * when opening a stream, including a device ID, number of channels,
+   * and starting channel number. For output-only streams, this
+   * argument should be null.
+   * @param format An RtAudioFormat specifying the desired sample data format.
+   * @param sampleRate The desired sample rate (sample frames per second).
+   * @param bufferFrames A value indicating the desired
+   * internal buffer size in sample frames. The actual value
+   * used by the device is returned from `openStream` call.
+   * A value of zero can be specified, in which case the lowest
+   * allowable value is determined.
+   * @param options An optional object containing various
+   * global stream options, including a list of OR'ed RtAudioStreamFlags
+   * and a suggested number of stream buffers that can be used to 
+   * control stream latency. More buffers typically result in more
+   * robust performance, though at a cost of greater latency.  If a
+   * value of zero is specified, a system-specific median value is
+   * chosen. If the RTAUDIO_MINIMIZE_LATENCY flag bit is set, the
+   * lowest allowable value is used. The actual value used is
+   * returned from `openStream` call. The parameter is API dependent.
+   * 
+   * @param callback A function that will be invoked
+   * when input data is available and/or output data is needed.
+   * 
+   * @returns The actual bufferFrames value used by the device.
+   */
+  openStream(
+    outputParameters: StreamParameters | null,
+    inputParameters: StreamParameters | null,
+    format: RtAudioFormat,
+    sampleRate: number,
+    bufferFrames: number,
+    options: StreamOptions | null,
+    callback: RtAudioCallback,
+  ): number
+
+  /**
+   * A function that closes a stream and frees any associated stream memory.
+   * 
+   * If a stream is not open, an RTAUDIO_WARNING will be passed to the
+   * user-provided errorCallback function (or otherwise printed to stderr).
+   */
+  closeStream(): void
+
+  /**
+   * A function that starts a stream.
+   * 
+   * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
+   * processing. An RTAUDIO_WARNING is returned if a stream is not open
+   * or is already running.
+   */
+  startStream(): void
+
+  /**
+   * Stop a stream, allowing any samples remaining in the output queue to be played.
+   * 
+   * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
+   * processing. An RTAUDIO_WARNING is returned if a stream is not
+   * open or is already stopped.
+   */
+  stopStream(): void
+
+  /**
+   * Stop a stream, discarding any samples remaining in the input/output queue.
+   * 
+   * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
+   * processing. An RTAUDIO_WARNING is returned if a stream is not
+   * open or is already stopped.
+   */
+  abortStream(): void
+
+  /**
+   * A public function that returns a vector of audio devices.
+   * 
+   * The ID values returned by this function are used internally by
+   * RtAudio to identify a given device. The values themselves are
+   * arbitrary and do not correspond to device IDs used by the
+   * underlying API (nor are they index values). This function performs
+   * a system query of available devices each time it is called, thus
+   * supporting devices (dis)connected after instantiation. If no
+   * devices are available, the vector size will be zero. If a system
+   * error occurs during processing, a warning will be issued.
+   */
+  getDevices(): DeviceInfo[]
+
+  /**
+   * A function that returns the ID of the default input device.
+   * 
+   * If the underlying audio API does not provide a "default device",
+   * the first probed input device ID will be returned. If no devices
+   * are available, the return value will be 0 (which is an invalid
+   * device identifier).
+   */
+  getDefaultInputDevice(): number
+
+  /**
+   * A function that returns the ID of the default output device.
+   * 
+   * If the underlying audio API does not provide a "default device",
+   * the first probed output device ID will be returned. If no devices
+   * are available, the return value will be 0 (which is an invalid
+   * device identifier).
+   */
+  getDefaultOutputDevice(): number
+
+  /** Returns true if a stream is open and false if not. */
+  isStreamOpen(): boolean
+
+  /** Returns true if the stream is running and false if it is stopped or not open. */
+  isStreamRunning(): boolean
+
+  /** Returns the audio API specifier for the current instance of RtAudio. */
+  getCurrentApi(): number
+
+  /**
+   * Returns the internal stream latency in sample frames.
+   * 
+   * The stream latency refers to delay in audio input and/or output
+   * caused by internal buffering by the audio system and/or hardware.
+   * For duplex streams, the returned value will represent the sum of
+   * the input and output latencies.  If a stream is not open, the
+   * returned value will be invalid.  If the API does not report
+   * latency, the return value will be zero.
+   */
+  getStreamLatency(): number
+
+  /**
+   * Returns actual sample rate in use by the (open) stream.
+   * 
+   * On some systems, the sample rate used may be slightly different
+   * than that specified in the stream parameters.  If a stream is not
+   * open, a value of zero is returned.
+   */
+  getStreamSampleRate(): number
+
+  /**
+   * Returns the number of seconds of processed data since the stream was started.
+   * 
+   * The stream time is calculated from the number of sample frames
+   * processed by the underlying audio system, which will increment by
+   * units of the audio buffer size. It is not an absolute running
+   * time. If a stream is not open, the returned value may not be
+   * valid.
+   */
+  getStreamTime(): number
+
+  /** Set the stream time to a time in seconds greater than or equal to 0.0. */
+  setStreamTime(): number
+
+  /**
+   * Retrieve the error message corresponding to the last error or warning condition.
+   * 
+   * This function can be used to get a detailed error message when a
+   * non-zero RtAudioErrorType is returned by a function. This is the
+   * same message sent to the user-provided errorCallback function.
+   */
+  getErrorText(): string
+
+  /** A static function to determine the current RtAudio version. */
+  static getVersion(): string
+
+  /**
+   * A static function to determine the available compiled audio APIs.
+   */
+  static getCompiledApi(): RtAudioApi[]
+
+  /**
+   * Return the display name of a specified compiled audio API.
+   * 
+   * This obtains a long name used for display purposes.
+   * If the API is unknown, this function will return the empty string.
+   * 
+   * @param api the API id
+   */
+  static getApiDisplayName(api: RtAudioApi): string
+
+  /**
+   * Return the name of a specified compiled audio API.
+   * 
+   * This obtains a short lower-case name used for identification purposes.
+   * This value is guaranteed to remain identical across library versions.
+   * If the API is unknown, this function will return the empty string.
+   * 
+   * @param api the API id
+   */
+  static getApiName(api: RtAudioApi): string
+}
+
 /** Audio API specifier arguments */
 export declare enum RtAudioApi {
   /** Search for a working compiled API. */
@@ -212,260 +447,60 @@ export declare interface StreamParameters {
 /**
  * A function that will be invoked when input data is 
  * available and/or output data is needed.
+ * 
+ * @param output For output (or duplex) streams, the client
+ * should write `nFrames` of audio sample frames into this
+ * buffer. For input-only streams, this argument will be null.
+ * 
+ * @param input For input (or duplex) streams, this buffer will
+ * hold `nFrames` of input audio sample frames. For output-only streams, this argument
+ * will be null.
+ * 
+ * @param nFrames The number of sample frames of input or output
+ * data in the buffers. The actual buffer size in bytes is
+ * dependent on the `format` and number of channels in use.
+ * 
+ * @param streamTime The number of seconds that have elapsed since the
+ * stream was started.
+ * 
+ * @param status If non-zero, this argument indicates a data overflow
+ * or underflow condition for the stream. The particular
+ * condition can be determined by comparison with the
+ * RtAudioStreamStatus flags.
  */
-export declare type RtAudioCallback = (
-  /**
-   * For output (or duplex) streams, the client
-   * should write `nFrames` of audio sample frames into this
-   * buffer. For input-only streams, this argument will be null.
-   */
-  output: Uint8Array,
-  /**
-   * For input (or duplex) streams, this buffer will
-   * hold `nFrames` of input audio sample frames. For output-only streams, this argument
-   * will be null.
-   */
-  input: Uint8Array,
+export declare type RtAudioCallback =
+  (
+    /**
+     * @param output For output (or duplex) streams, the client
+     * should write `nFrames` of audio sample frames into this
+     * buffer. For input-only streams, this argument will be null.
+     */
+    output: Uint8Array,
 
-  /**
-   * The number of sample frames of input or output
-   * data in the buffers. The actual buffer size in bytes is
-   * dependent on the `format` and number of channels in use.
-   */
-  nFrames: number,
+    /**
+     * @param input For input (or duplex) streams, this buffer will
+     * hold `nFrames` of input audio sample frames. For output-only streams, this argument
+     * will be null.
+     */
+    input: Uint8Array,
 
-  /**
-   * The number of seconds that have elapsed since the
-   * stream was started.
-   */
-  streamTime: number,
+    /**
+     * @param nFrames The number of sample frames of input or output
+     * data in the buffers. The actual buffer size in bytes is
+     * dependent on the `format` and number of channels in use.
+     */
+    nFrames: number,
 
-  /**
-   * If non-zero, this argument indicates a data overflow
-   * or underflow condition for the stream. The particular
-   * condition can be determined by comparison with the
-   * RtAudioStreamStatus flags.
-   */
-  status: RtAudioStreamStatus
-) => void
+    /**
+     * @param streamTime The number of seconds that have elapsed since the
+     * stream was started.
+     */
+    streamTime: number,
 
-export declare class RtAudio {
-  /**
-   * Create a new RtAudio instance
-   * 
-   * @param api api to utilize. If omitted, an available one will be picked.
-   */
-  constructor()
-  constructor(api: RtAudioApi)
-
-  /** Set a client-defined function that will be invoked when an error or warning occurs 
-   * 
-   * @param errorCallback the callback
-  */
-  setErrorCallback: (errorCallback: (errType: RtAudioErrorType, message: string) => void) => void
-
-  /**
-   * Specify whether warning messages should be output or not.
-   *
-   * The default behaviour is for warning messages to be output,
-   * either to a client-defined error callback function (if specified)
-   * or to stderr.
-   * 
-   * @param value boolean value to use
-   */
-  showWarnings: (value: boolean) => void
-
-  /**
-   * A function for opening a stream with the specified parameters.
-   * 
-   * @param outputParameters Specifies output stream parameters to use
-   * when opening a stream, including a device ID, number of channels,
-   * and starting channel number.  For input-only streams, this
-   * argument should be null.
-   * @param inputParameters Specifies input stream parameters to use
-   * when opening a stream, including a device ID, number of channels,
-   * and starting channel number. For output-only streams, this
-   * argument should be null.
-   * @param format An RtAudioFormat specifying the desired sample data format.
-   * @param sampleRate The desired sample rate (sample frames per second).
-   * @param bufferFrames A value indicating the desired
-   * internal buffer size in sample frames. The actual value
-   * used by the device is returned from `openStream` call.
-   * A value of zero can be specified, in which case the lowest
-   * allowable value is determined.
-   * @param options An optional object containing various
-   * global stream options, including a list of OR'ed RtAudioStreamFlags
-   * and a suggested number of stream buffers that can be used to 
-   * control stream latency. More buffers typically result in more
-   * robust performance, though at a cost of greater latency.  If a
-   * value of zero is specified, a system-specific median value is
-   * chosen. If the RTAUDIO_MINIMIZE_LATENCY flag bit is set, the
-   * lowest allowable value is used. The actual value used is
-   * returned from `openStream` call. The parameter is API dependent.
-   * 
-   * @param callback A function that will be invoked
-   * when input data is available and/or output data is needed.
-   * 
-   * @returns The actual bufferFrames value used by the device.
-   */
-  openStream: (
-    outputParameters: StreamParameters | null,
-    inputParameters: StreamParameters | null,
-    format: RtAudioFormat,
-    sampleRate: number,
-    bufferFrames: number,
-    options: StreamOptions | null,
-    callback: RtAudioCallback,
-  ) => number
-
-  /**
-   * A function that closes a stream and frees any associated stream memory.
-   * 
-   * If a stream is not open, an RTAUDIO_WARNING will be passed to the
-   * user-provided errorCallback function (or otherwise printed to stderr).
-   */
-  closeStream: () => void
-
-  /**
-   * A function that starts a stream.
-   * 
-   * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
-   * processing. An RTAUDIO_WARNING is returned if a stream is not open
-   * or is already running.
-   */
-  startStream: () => void
-
-  /**
-   * Stop a stream, allowing any samples remaining in the output queue to be played.
-   * 
-   * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
-   * processing. An RTAUDIO_WARNING is returned if a stream is not
-   * open or is already stopped.
-   */
-  stopStream: () => void
-
-  /**
-   * Stop a stream, discarding any samples remaining in the input/output queue.
-   * 
-   * An RTAUDIO_SYSTEM_ERROR is returned if an error occurs during
-   * processing. An RTAUDIO_WARNING is returned if a stream is not
-   * open or is already stopped.
-   */
-  abortStream: () => void
-
-  /**
-   * A public function that returns a vector of audio devices.
-   * 
-   * The ID values returned by this function are used internally by
-   * RtAudio to identify a given device. The values themselves are
-   * arbitrary and do not correspond to device IDs used by the
-   * underlying API (nor are they index values). This function performs
-   * a system query of available devices each time it is called, thus
-   * supporting devices (dis)connected after instantiation. If no
-   * devices are available, the vector size will be zero. If a system
-   * error occurs during processing, a warning will be issued.
-   */
-  getDevices: () => DeviceInfo[]
-
-  /**
-   * A function that returns the ID of the default input device.
-   * 
-   * If the underlying audio API does not provide a "default device",
-   * the first probed input device ID will be returned. If no devices
-   * are available, the return value will be 0 (which is an invalid
-   * device identifier).
-   */
-  getDefaultInputDevice: () => number
-
-  /**
-   * A function that returns the ID of the default output device.
-   * 
-   * If the underlying audio API does not provide a "default device",
-   * the first probed output device ID will be returned. If no devices
-   * are available, the return value will be 0 (which is an invalid
-   * device identifier).
-   */
-  getDefaultOutputDevice: () => number
-
-  /** Returns true if a stream is open and false if not. */
-  isStreamOpen: () => boolean
-
-  /** Returns true if the stream is running and false if it is stopped or not open. */
-  isStreamRunning: () => boolean
-
-  /** Returns the audio API specifier for the current instance of RtAudio. */
-  getCurrentApi: () => number
-
-  /**
-   * Returns the internal stream latency in sample frames.
-   * 
-   * The stream latency refers to delay in audio input and/or output
-   * caused by internal buffering by the audio system and/or hardware.
-   * For duplex streams, the returned value will represent the sum of
-   * the input and output latencies.  If a stream is not open, the
-   * returned value will be invalid.  If the API does not report
-   * latency, the return value will be zero.
-   */
-  getStreamLatency: () => number
-
-  /**
-   * Returns actual sample rate in use by the (open) stream.
-   * 
-   * On some systems, the sample rate used may be slightly different
-   * than that specified in the stream parameters.  If a stream is not
-   * open, a value of zero is returned.
-   */
-  getStreamSampleRate: () => number
-
-  /**
-   * Returns the number of seconds of processed data since the stream was started.
-   * 
-   * The stream time is calculated from the number of sample frames
-   * processed by the underlying audio system, which will increment by
-   * units of the audio buffer size. It is not an absolute running
-   * time. If a stream is not open, the returned value may not be
-   * valid.
-   */
-  getStreamTime: () => number
-
-  /** Set the stream time to a time in seconds greater than or equal to 0.0. */
-  setStreamTime: () => number
-
-  /**
-   * Retrieve the error message corresponding to the last error or warning condition.
-   * 
-   * This function can be used to get a detailed error message when a
-   * non-zero RtAudioErrorType is returned by a function. This is the
-   * same message sent to the user-provided errorCallback function.
-   */
-  getErrorText: () => string
-
-  /** A static function to determine the current RtAudio version. */
-  static getVersion: () => string
-
-  /**
-   * A static function to determine the available compiled audio APIs.
-   */
-  static getCompiledApi: () => RtAudioApi[]
-
-  /**
-   * Return the display name of a specified compiled audio API.
-   * 
-   * This obtains a long name used for display purposes.
-   * If the API is unknown, this function will return the empty string.
-   * 
-   * @param api the API id
-   */
-  static getApiDisplayName(api: RtAudioApi): string
-
-  /**
-   * Return the name of a specified compiled audio API.
-   * 
-   * This obtains a short lower-case name used for identification purposes.
-   * This value is guaranteed to remain identical across library versions.
-   * If the API is unknown, this function will return the empty string.
-   * 
-   * @param api the API id
-   */
-  static getApiName(api: RtAudioApi): string
-}
+    /**
+     * @param status If non-zero, this argument indicates a data overflow
+     * or underflow condition for the stream. The particular
+     * condition can be determined by comparison with the
+     * RtAudioStreamStatus flags.
+     */
+    status: RtAudioStreamStatus) => void

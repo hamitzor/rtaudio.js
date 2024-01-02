@@ -1,0 +1,15 @@
+{
+  "navigationLinks": {
+    "RtAudio.js Examples": "https://github.com/hamitzor/rtaudio.js-examples"
+  },
+  "sidebarLinks": {
+    "RtAudio.js Examples": "https://github.com/hamitzor/rtaudio.js-examples"
+  },
+  "categorizeByGroup": true,
+  "sort": [
+    "source-order",
+  ],
+  "includeVersion": true,
+  "commentStyle": "all",
+  "cleanOutputDir": true
+}

@@ -116,6 +116,8 @@ If you don't use Node between 14.x.x - 21.x.x or Electron between 11.x.x - 28.x.
 - Your Node or Electron version should support N-API 4 and up (see <a href="https://nodejs.org/docs/latest/api/n-api.html#node-api-version-matrix">this</a>)
 - CMake
 - A proper C/C++ compiler toolchain
+  - For Windows, MSVC should be enough
+  - For Linux, GCC or Clang and make
 
 
 

@@ -71,6 +71,8 @@ As simple as that, no additional library/software required for installation. If 
 
 ## Usage
 
+This binding is pretty orthodox about staying loyal to the original RtAudio API, so using RtAudio's documentation and tutorials should mostly cover the usage of the binding as well. Almost all the method names and signatures are the same. There is a separate repository named <a href="https://github.com/hamitzor/rtaudio.js-examples">RtAudio.js examples</a> that demonstrates the usage of this binding with a couple of examples. Besides, here is a small example for a quick start:
+
 ```javascript
 // An examples that echoes audio from default input to default output.
 

@@ -470,37 +470,8 @@ export declare interface StreamParameters {
  */
 export declare type RtAudioCallback =
   (
-    /**
-     * @param output For output (or duplex) streams, the client
-     * should write `nFrames` of audio sample frames into this
-     * buffer. For input-only streams, this argument will be null.
-     */
     output: Uint8Array,
-
-    /**
-     * @param input For input (or duplex) streams, this buffer will
-     * hold `nFrames` of input audio sample frames. For output-only streams, this argument
-     * will be null.
-     */
     input: Uint8Array,
-
-    /**
-     * @param nFrames The number of sample frames of input or output
-     * data in the buffers. The actual buffer size in bytes is
-     * dependent on the `format` and number of channels in use.
-     */
     nFrames: number,
-
-    /**
-     * @param streamTime The number of seconds that have elapsed since the
-     * stream was started.
-     */
     streamTime: number,
-
-    /**
-     * @param status If non-zero, this argument indicates a data overflow
-     * or underflow condition for the stream. The particular
-     * condition can be determined by comparison with the
-     * RtAudioStreamStatus flags.
-     */
     status: RtAudioStreamStatus) => void

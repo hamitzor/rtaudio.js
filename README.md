@@ -1,4 +1,3 @@
-
 <h1>
   RtAudio.js
   <br>
@@ -13,26 +12,27 @@
   </a>
 </p>
 
-Node binding of the <a href="https://github.com/thestk/rtaudio">RtAudio</a> C++ audio library. To see a detailed description of RtAudio visit it's <a href="https://github.com/thestk/rtaudio">GitHub page</a>.
+Node binding of the <a href="https://github.com/thestk/rtaudio">RtAudio</a> C++ audio library. To see a detailed description of RtAudio visit it's <a href="https://www.music.mcgill.ca/~gary/rtaudio/">homepage</a> or <a href="https://github.com/thestk/rtaudio">Github repo</a>.
 
 An overview of the binding:
 
-* Access well-known audio I/O APIs
+- Access well-known audio APIs
   - Windows: WASAPI and DirectSound
   - Linux: ALSA and PulseAudio
-* Probe available audio devices
-* Stream audio to output devices
-* Stream audio from input devices
-* Fully configurable audio streaming, allows configuring
+- Probe available audio devices
+- Stream audio to output devices
+- Stream audio from input devices
+- Fully configurable audio streaming, allows configuring
   - sample rate
   - bit depth
   - frame size
   - number of channels
-* No additional library/software needed, besides an npm install
+- No additional library/software needed, besides an npm install
 
 ## Installation
 
-Since this is an addon written in C++ it needs to be built before used. Prebuilds are available for Node between 14.x.x - 21.x.x and Electron between 11.x.x - 28.x.x for x64 Linux and x64 Windows. This should cover quite a lot of audience but if you happen to use a different target, you will have to build the binding yourself (see below).
+Since this is an addon written in C++ it needs to be built before used. Prebuilds are available for Node between 14.x.x - 21.x.x and Electron between 11.x.x - 28.x.x for x64 Linux and x64 Windows. This should cover most of the installations but if you happen to use a different target, you will have to build the binding yourself (see below).
+
 > **Note**
 > Only Windows and Linux are supported at the moment.
 
@@ -43,14 +43,16 @@ Install it using `npm` or `yarn`
 ```
 npm install @hamitzor/rtaudio.js
 ```
+
 or
+
 ```
 yarn add @hamitzor/rtaudio.js
 ```
 
 #### Installing for Electron 11.x.x - 28.x.x
 
-If you'll be using the package with Electron, you'll have to set some environment variables before the installation command.
+If you'll be using the package with Electron, you'll have to set some environment variables before the installation command. Here is how you'd do it on bash:
 
 ```
 export npm_config_runtime=electron
@@ -62,26 +64,36 @@ These will help the install command to pick the correct prebuilds. After setting
 ```
 npm install @hamitzor/rtaudio.js
 ```
+
 or
+
 ```
 yarn add @hamitzor/rtaudio.js
 ```
 
 As simple as that, no additional library/software required for installation. If you run into trouble during installation, don't hesitate to create an issue at <a href="https://github.com/hamitzor/rtaudio.js/issues">Github</a>.
 
+## Documentation
+
+You can find the <a href="https://hamitzor.github.io/rtaudio.js/">documentation here</a>, also there is an <a href="https://github.com/hamitzor/rtaudio.js-examples">RtAudio.js examples</a> repo that demonstrates a few use cases.
+
 ## Usage
 
 This binding is pretty orthodox about staying loyal to the original RtAudio API, so using RtAudio's documentation and tutorials should mostly cover the usage of the binding as well. Almost all the method names and signatures are the same. There is a separate repository named <a href="https://github.com/hamitzor/rtaudio.js-examples">RtAudio.js examples</a> that demonstrates the usage of this binding with a couple of examples. Besides, here is a small example for a quick start:
 
 ```javascript
-// An examples that echoes audio from default input to default output.
+const {
+  RtAudio,
+  RtAudioFormat,
+  RtAudioErrorType,
+  RtAudioStreamStatus,
+  RtAudioApi,
+} = require("@hamitzor/rtaudio.js");
 
-const { RtAudio, RtAudioFormat, RtAudioErrorType, RtAudioStreamStatus, RtAudioApi } = require('@hamitzor/rtaudio.js')
+const rtAudio = new RtAudio();
 
-const rtAudio = new RtAudio()
-
-const defaultInputDevice = rtAudio.getDefaultInputDevice()
-const defaultOutputDevice = rtAudio.getDefaultOutputDevice()
+const defaultInputDevice = rtAudio.getDefaultInputDevice();
+const defaultOutputDevice = rtAudio.getDefaultOutputDevice();
 
 // Create a stream
 rtAudio.openStream(
@@ -92,25 +104,53 @@ rtAudio.openStream(
   1920, // buffer size
   null,
   // A callback that will be invoked when input is ready and/or output is needed.
-  (output, input, _nFrames, _time, status) => {
-    // output and input are instances of Uint8Array
-    // Write input directly to the output buffer, for echoing.
-    output.set(input, 0)
+  (output, input, nFrames, _time, status) => {
+    // output and input are instances of Uint8Array of PCM samples.
+
+    // To access individual PCM samples, you can convert Uint8Array
+    // to the respective typed array. In this example it would be Int16Array
+    // since we use RTAUDIO_SINT16:
+    const data = Int16Array.from(input.buffer)
+    data.at(0) // First samples
+    data.at(1) // Second sample
+    data.at(2) // Third sample
+    data.at(3) // Fourth sample
+    ...
+    data.at(nFrames - 1) // Last sample
+
+    // nFrames is most of the times the buffer size we provide
+    // to the `openStream` function, i.e. 1920
+
+    // If we've used 2 channels, the data would be twice in size and we would
+    // access first and second channel's interleaved samples. For example:
+    const data = Int16Array.from(input.buffer)
+    data.at(0) // First sample of the first channel
+    data.at(1) // First sample of the second channel
+    data.at(2) // Second sample of the first channel
+    data.at(3) // Second sample of the second channel
+    ...
+    data.at(nFrames * 2 - 2) // Last sample of the first channel
+    data.at(nFrames * 2 - 1) // Last sample of the second channel
+
+    // Note: RtAudio uses system's endianness.
+
+    // For echoing, we can write input directly to the output buffer.
+    output.set(input, 0);
   }
-)
+);
 
 // Start the stream
-rtAudio.start()
+rtAudio.start();
 
 // On SIGINT, close the stream and exit
-process.on('SIGINT', () => {
-  rtAudio.closeStream()
-  process.exit()
-})
-
+process.on("SIGINT", () => {
+  rtAudio.closeStream();
+  process.exit();
+});
 ```
 
 ## Building from source
+
 If you don't use Node between 14.x.x - 21.x.x or Electron between 11.x.x - 28.x.x, or your platform is not x64 Linux or x64 Windows, the npm install command will attempt to build the binding from source. In that case you'll need to satisfy some prerequisites:
 
 - Your Node or Electron version should support N-API 4 and up (see <a href="https://nodejs.org/docs/latest/api/n-api.html#node-api-version-matrix">this</a>)
@@ -118,8 +158,6 @@ If you don't use Node between 14.x.x - 21.x.x or Electron between 11.x.x - 28.x.
 - A proper C/C++ compiler toolchain
   - For Windows, MSVC should be enough
   - For Linux, GCC or Clang and make
-
-
 
 ## Credits
 

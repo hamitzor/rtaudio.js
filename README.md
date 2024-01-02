@@ -7,7 +7,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@hamitzor/rtaudio.js">
-    <img src="https://img.shields.io/badge/1.0.5-brightgreen?style=flat&label=npm%20package"
+    <img src="https://img.shields.io/badge/1.0.6-brightgreen?style=flat&label=npm%20package"
          alt="NPM">
   </a>
 </p>

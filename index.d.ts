@@ -384,7 +384,7 @@ export declare enum RtAudioStreamStatus {
 
 /** Stream options */
 export declare type StreamOptions = {
-  /** A bit-mask of stream flags (RTAUDIO_MINIMIZE_LATENCY, RTAUDIO_HOG_DEVICE, RTAUDIO_ALSA_USE_DEFAULT). */
+  /** A bit-mask of stream flags {@link RtAudioStreamFlags} */
   flags?: number
 
   /** Number of stream buffers. */

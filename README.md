@@ -110,27 +110,27 @@ rtAudio.openStream(
     // To access individual PCM samples, you can convert Uint8Array
     // to the respective typed array. In this example it would be Int16Array
     // since we use RTAUDIO_SINT16:
-    const data = Int16Array.from(input.buffer)
-    data.at(0) // First samples
-    data.at(1) // Second sample
-    data.at(2) // Third sample
-    data.at(3) // Fourth sample
+    const data = Int16Array.from(input.buffer);
+    data.at(0); // First samples
+    data.at(1); // Second sample
+    data.at(2); // Third sample
+    data.at(3); // Fourth sample
     ...
-    data.at(nFrames - 1) // Last sample
+    data.at(nFrames - 1); // Last sample
 
     // nFrames is most of the times the buffer size we provide
     // to the `openStream` function, i.e. 1920
 
     // If we've used 2 channels, the data would be twice in size and we would
     // access first and second channel's interleaved samples. For example:
-    const data = Int16Array.from(input.buffer)
-    data.at(0) // First sample of the first channel
-    data.at(1) // First sample of the second channel
-    data.at(2) // Second sample of the first channel
-    data.at(3) // Second sample of the second channel
+    const data = Int16Array.from(input.buffer);
+    data.at(0); // First sample of the first channel
+    data.at(1); // First sample of the second channel
+    data.at(2); // Second sample of the first channel
+    data.at(3); // Second sample of the second channel
     ...
-    data.at(nFrames * 2 - 2) // Last sample of the first channel
-    data.at(nFrames * 2 - 1) // Last sample of the second channel
+    data.at(nFrames * 2 - 2); // Last sample of the first channel
+    data.at(nFrames * 2 - 1); // Last sample of the second channel
 
     // Note: RtAudio uses system's endianness.
 

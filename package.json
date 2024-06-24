@@ -1,6 +1,6 @@
 {
     "name": "@hamitzor/rtaudio.js",
-    "version": "1.0.11",
+    "version": "1.0.12",
     "description": "RtAudio bindings for Node",
     "repository": {
         "type": "git",

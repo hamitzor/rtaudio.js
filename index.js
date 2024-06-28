@@ -36,6 +36,9 @@ module.exports.RtAudioApi = {
   /** The Linux PulseAudio API. */
   LINUX_PULSE: 4,
 
+  /** The Steinberg Audio Stream I/O API. */
+  WINDOWS_ASIO: 6,
+
   /** The Microsoft WASAPI API. */
   WINDOWS_WASAPI: 7,
 

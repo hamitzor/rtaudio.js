@@ -27,17 +27,8 @@ module.exports.RtAudioApi = {
   /** Search for a working compiled API. */
   UNSPECIFIED: 0,
 
-  /** Macintosh OS-X Core Audio API. */
-  MACOSX_CORE: 1,
-
   /** The Advanced Linux Sound Architecture API. */
   LINUX_ALSA: 2,
-
-  /** The Linux PulseAudio API. */
-  LINUX_PULSE: 4,
-
-  /** The Steinberg Audio Stream I/O API. */
-  WINDOWS_ASIO: 6,
 
   /** The Microsoft WASAPI API. */
   WINDOWS_WASAPI: 7,

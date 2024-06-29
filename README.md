@@ -7,7 +7,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@hamitzor/rtaudio.js">
-    <img src="https://img.shields.io/badge/1.0.16-brightgreen?style=flat&label=npm%20package"
+    <img src="https://img.shields.io/badge/1.1.0-brightgreen?style=flat&label=npm%20package"
          alt="NPM">
   </a>
 </p>
@@ -18,7 +18,7 @@ An overview of the binding:
 
 - Access well-known audio APIs
   - Windows: WASAPI and DirectSound
-  - Linux: ALSA and PulseAudio
+  - Linux: ALSA
 - Probe available audio devices
 - Stream audio to output devices
 - Stream audio from input devices
@@ -79,7 +79,7 @@ set npm_config_target=28.0.0
 
 To see a complete list of Electron versions, see this [registry](https://github.com/electron/node-abi/blob/main/abi_registry.json).
 
-These environment variables will help the installation command to pick the correct [prebuilds](https://github.com/hamitzor/rtaudio.js/releases/tag/v1.0.16). After setting these up, you can simply use `npm` or `yarn`
+These environment variables will help the installation command to pick the correct [prebuilds](https://github.com/hamitzor/rtaudio.js/releases/tag/v1.1.0). After setting these up, you can simply use `npm` or `yarn`
 
 ```
 npm install @hamitzor/rtaudio.js

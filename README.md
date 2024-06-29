@@ -7,7 +7,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@hamitzor/rtaudio.js">
-    <img src="https://img.shields.io/badge/1.0.13-brightgreen?style=flat&label=npm%20package"
+    <img src="https://img.shields.io/badge/1.0.15-brightgreen?style=flat&label=npm%20package"
          alt="NPM">
   </a>
 </p>
@@ -31,7 +31,10 @@ An overview of the binding:
 
 ## Installation
 
-Since this is an addon written in C++ it needs to be built before used. Prebuilds are available for Node between 14.x.x - 21.x.x and Electron between 11.x.x - 28.x.x for x64 Linux and x64 Windows. This should cover most of the installations but if you happen to use a different target, you will have to build the binding yourself (see below).
+A single `npm install` or `yarn add` command is enough for Node between 14.x.x - 21.x.x 
+and Electron between 11.x.x - 28.x.x on x64 Linux and x64 Windows. This should cover most of 
+the installations but if you happen to use a different target/platform, you will have to build 
+the binding yourself (see [Building from source](#building-from-source)).
 
 > **Note**
 > Only Windows and Linux are supported at the moment.
@@ -52,14 +55,31 @@ yarn add @hamitzor/rtaudio.js
 
 #### Installing for Electron 11.x.x - 28.x.x
 
-If you'll be using the package with Electron, you'll have to set some environment variables before the installation command. Here is how you'd do it on bash:
+If you'll be using the package with Electron, you'll have to set some environment variables before the installation command.
 
+For example, for Electron v28.0.0
+
+On bash:
 ```
 export npm_config_runtime=electron
-export npm_config_target=<your_electron_version>
+export npm_config_target=28.0.0
 ```
 
-These will help the install command to pick the correct prebuilds. After setting these up, you can simply use `npm` or `yarn`
+On powershell:
+```
+$env:npm_config_runtime = "electron"
+$env:npm_config_target = "28.0.0"
+```
+
+On cmd:
+```
+set npm_config_runtime=electron
+set npm_config_target=28.0.0
+```
+
+To see a complete list of Electron versions, see this [registry](https://github.com/electron/node-abi/blob/main/abi_registry.json).
+
+These environment variables will help the installation command to pick the correct [prebuilds](https://github.com/hamitzor/rtaudio.js/releases/tag/v1.0.15). After setting these up, you can simply use `npm` or `yarn`
 
 ```
 npm install @hamitzor/rtaudio.js

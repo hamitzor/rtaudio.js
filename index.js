@@ -11,7 +11,7 @@ if (process.platform === 'win32') {
     RtAudio = bindings('rtaudio-js-linux-custom').NodeRtAudio
   } catch (_err) {
     try {
-      RtAudio = bindings('rtaudio-js-linux-pulse-alsa.node').NodeRtAudio
+      RtAudio = bindings('rtaudio-js-linux-pulse.node').NodeRtAudio
     } catch (_err) {
       RtAudio = bindings('rtaudio-js-linux-alsa.node').NodeRtAudio
     }
@@ -27,8 +27,8 @@ module.exports.RtAudioApi = {
   /** Search for a working compiled API. */
   UNSPECIFIED: 0,
 
-  /** The Advanced Linux Sound Architecture API. */
-  LINUX_ALSA: 2,
+  /** The Linux PulseAudio API. */
+  LINUX_PULSE: 4,
 
   /** The Microsoft WASAPI API. */
   WINDOWS_WASAPI: 7,

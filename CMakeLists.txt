@@ -20,9 +20,11 @@ if(WIN32)
 endif()
 
 if(LINUX)
-  option(RTAUDIO_API_PULSE "" OFF)
-  option(RTAUDIO_API_JACK "" OFF)
-  set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX "-linux-alsa.node")
+    option(RTAUDIO_API_ALSA "" OFF)
+    option(RTAUDIO_API_PULSE "" ON)
+    option(RTAUDIO_API_JACK "" OFF)
+    
+    set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX "-linux-pulse.node")
 
   # if(DEFINED ENV{RTAUDIO_JS_LINUX_ALSA_ONLY})
   #   option(RTAUDIO_API_PULSE "" OFF)

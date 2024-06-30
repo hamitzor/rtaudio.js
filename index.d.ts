@@ -238,8 +238,8 @@ export declare enum RtAudioApi {
   /** Search for a working compiled API. */
   UNSPECIFIED = 0,
 
-  /** The Advanced Linux Sound Architecture API. */
-  LINUX_ALSA = 2,
+  /** The Linux PulseAudio API. */
+  LINUX_PULSE = 4,
 
   /** The Microsoft WASAPI API. */
   WINDOWS_WASAPI = 7,

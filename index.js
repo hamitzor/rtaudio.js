@@ -7,17 +7,11 @@ let RtAudio
 if (process.platform === 'win32') {
   RtAudio = bindings('rtaudio-js-win32').NodeRtAudio
 } else if (process.platform === 'linux') {
-  try {
-    RtAudio = bindings('rtaudio-js-linux-custom').NodeRtAudio
-  } catch (_err) {
-    try {
-      RtAudio = bindings('rtaudio-js-linux-pulse.node').NodeRtAudio
-    } catch (_err) {
-      RtAudio = bindings('rtaudio-js-linux-alsa.node').NodeRtAudio
-    }
-  }
+  RtAudio = bindings('rtaudio-js-linux-pulse.node').NodeRtAudio
+} else if (process.platform === 'darwin') {
+  RtAudio = bindings('rtaudio-js-darwin.node').NodeRtAudio
 } else {
-  throw 'RtAudio.js supports Linux and Windows only.'
+  throw 'RtAudio.js supports win32, darwin and linux only.'
 }
 
 module.exports.RtAudio = RtAudio

@@ -26,9 +26,11 @@ const channels = 1
  * 1920 samples before propagating it to the user program.
  */
 const frameSize = 100 // ms 
-const bufferFrames = 48000 / 1000 * module.exports.frameSize // 1920
+const bufferFrames = 48000 / 1000 * frameSize // 1920
 
 const apis = RtAudio.getCompiledApi()
+
+console.log(apis)
 
 if (apis.length < 1) {
   console.error("No available API found")

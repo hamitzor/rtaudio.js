@@ -5,6 +5,7 @@
 #include <RtAudio.h>
 #include <shared_mutex>
 #include <queue>
+#include <semaphore>
 
 class NodeRtAudio : public RtAudio, public Napi::ObjectWrap<NodeRtAudio>
 {
@@ -48,6 +49,8 @@ private:
   static RtAudio::Api parseApi(Napi::Env env, const Napi::Value &val);
   static unsigned int getFormatByteSize(RtAudioFormat format);
   static bool deviceExists(unsigned int id, const std::vector<unsigned int> &devices);
+  std::binary_semaphore rtThreadSmph;
+  std::binary_semaphore jsThreadSmph;
 
 private:
   Napi::ThreadSafeFunction tsCb;

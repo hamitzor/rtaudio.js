@@ -41,7 +41,7 @@ Napi::Object NodeRtAudio::Init(Napi::Env env, Napi::Object exports)
   return exports;
 }
 
-NodeRtAudio::NodeRtAudio(const Napi::CallbackInfo &info) : RtAudio(parseApi(info.Env(), info[0])), Napi::ObjectWrap<NodeRtAudio>(info)
+NodeRtAudio::NodeRtAudio(const Napi::CallbackInfo &info) : RtAudio(parseApi(info.Env(), info[0])), Napi::ObjectWrap<NodeRtAudio>(info), rtThreadSmph{0}, jsThreadSmph{0}
 {
 }
 
@@ -256,16 +256,19 @@ Napi::Value NodeRtAudio::openStream(const Napi::CallbackInfo &info)
   this->sampleRate = info[3].As<Napi::Number>().Int32Value();
   this->bufferFrames = info[4].As<Napi::Number>().Int32Value();
 
-  this->tsCb = Napi::ThreadSafeFunction::New(env, info[6].As<Napi::Function>(), "callback", 0, 1);
+  this->tsCb = Napi::ThreadSafeFunction::New(env, info[6].As<Napi::Function>(), "callback", 1, 1);
 
   RtAudioCallback callback{
       [](void *outputBuffer, void *inputBuffer, unsigned int nFrames, double streamTime, RtAudioStreamStatus status, void *userData)
       {
         NodeRtAudio *that = (NodeRtAudio *)userData;
 
-        that->tsCb.NonBlockingCall(
+        that->rtThreadSmph.release();
+
+        that->tsCb.BlockingCall(
             [nFrames, streamTime, status, that, outputBuffer, inputBuffer](Napi::Env env, Napi::Function callback)
             {
+              that->rtThreadSmph.acquire();
               unsigned int sampleSize = getFormatByteSize(that->format);
               unsigned int outputByteCount = that->outputParams.nChannels * nFrames * sampleSize;
               unsigned int inputByteCount = that->inputParams.nChannels * nFrames * sampleSize;
@@ -325,7 +328,11 @@ Napi::Value NodeRtAudio::openStream(const Napi::CallbackInfo &info)
               {
                 input.Unref();
               }
+
+              that->jsThreadSmph.release();
             });
+
+        that->jsThreadSmph.acquire();
 
         return 0;
       }};

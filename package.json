@@ -31,7 +31,6 @@
         "index.js",
         "index.d.ts"
     ],
-    "packageManager": "yarn@4.0.2",
     "scripts": {
         "build:debug": "cmake-js --debug",
         "build": "cmake-js rebuild",
@@ -43,7 +42,7 @@
         "bindings": "^1.5.0",
         "cmake-js": "^7.2.1",
         "node-addon-api": "^7.0.0",
-        "prebuild": "^12.1.0",
+        "prebuild": "^13.0.1",
         "prebuild-install": "^7.1.1",
         "typescript": "^5.3.3"
     },

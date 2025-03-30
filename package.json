@@ -35,8 +35,8 @@
         "build:debug": "cmake-js --debug",
         "build": "cmake-js rebuild",
         "install": "prebuild-install || cmake-js rebuild",
-        "prebuild-release-node": "prebuild --backend cmake-js -t 14.0.0 -t 15.0.0 -t 16.0.0 -t 17.0.0 -t 18.0.0 -t 19.0.0 -t 20.0.0 -t 21.0.0 -r node --include-regex \"\\.(node|dll|so)$\" --verbose",
-        "prebuild-release-electron": "prebuild --backend cmake-js -t 11.0.0 -t 12.0.0 -t 13.0.0 -t 14.0.0 -t 15.0.0 -t 14.0.2 -t 15.0.0 -t 16.0.0 -t 17.0.0 -t 18.0.0 -t 19.0.0 -t 20.0.0 -t 21.0.0 -t 22.0.0 -t 23.0.0 -t 24.0.0 -t 25.0.0 -t 26.0.0 -t 27.0.0 -t 28.0.0 -r electron --include-regex \"\\.(node|dll|so)$\" --verbose",
+        "prebuild-release-node": "prebuild --backend cmake-js -t 14.0.0 -t 15.0.0 -t 16.0.0 -t 17.0.0 -t 18.0.0 -t 19.0.0 -t 20.0.0 -t 21.0.0 -r node --include-regex \"\\.(node|dll|so|dylib)$\" --verbose",
+        "prebuild-release-electron": "prebuild --backend cmake-js -t 11.0.0 -t 12.0.0 -t 13.0.0 -t 14.0.0 -t 15.0.0 -t 14.0.2 -t 15.0.0 -t 16.0.0 -t 17.0.0 -t 18.0.0 -t 19.0.0 -t 20.0.0 -t 21.0.0 -t 22.0.0 -t 23.0.0 -t 24.0.0 -t 25.0.0 -t 26.0.0 -t 27.0.0 -t 28.0.0 -r electron --include-regex \"\\.(node|dll|so|dylib)$\" --verbose",
         "prebuild-release": "npm run prebuild-release-node && npm run prebuild-release-electron"
     },
     "dependencies": {

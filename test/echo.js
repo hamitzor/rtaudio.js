@@ -74,9 +74,15 @@ rtAudio.openStream(
   sampleRate,
   bufferFrames,
   null,
-  (output, input, _nFrames, _time, status) => {
+  (output, input, _nFrames, time, status) => {
     // Write input directly to the output buffer, for echoing.
     output.set(input, 0)
+
+    if (time > 2) {
+      // stop the stream after 2 seconds
+      // Avoid calling rtAudio.closeStream() in the callback function here
+      return 1;
+    }
 
     if (status === RtAudioStreamStatus.RTAUDIO_INPUT_OVERFLOW) {
       console.warn('Input data was discarded because of an overflow condition at the driver.')
@@ -85,6 +91,8 @@ rtAudio.openStream(
     if (status === RtAudioStreamStatus.RTAUDIO_OUTPUT_UNDERFLOW) {
       console.warn('The output buffer ran low, likely producing a break in the output sound.')
     }
+
+    return 0; // keep the stream running
   }
 )
 

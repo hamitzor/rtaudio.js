@@ -7,7 +7,7 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@hamitzor/rtaudio.js">
-    <img src="https://img.shields.io/badge/2.1.0-brightgreen?style=flat&label=npm%20package"
+    <img src="https://img.shields.io/badge/2.2.0-brightgreen?style=flat&label=npm%20package"
          alt="NPM">
   </a>
 </p>
@@ -110,7 +110,7 @@ rtAudio.openStream(
   1920, // buffer size
   null,
   // A callback that will be invoked when input is ready and/or output is needed.
-  (output, input, nFrames, _time, status) => {
+  (output, input, nFrames, time, status) => {
     // output and input are instances of Uint8Array of PCM samples.
 
     // To access individual PCM samples, you can convert Uint8Array
@@ -142,6 +142,14 @@ rtAudio.openStream(
 
     // For echoing, we can write input directly to the output buffer.
     output.set(input, 0);
+
+    if (time > 2) {
+      // stop the stream after 2 seconds
+      // Avoid calling rtAudio.closeStream() in the callback function here
+      return 1;
+    }
+
+    return 0; // keep the stream running
   }
 );
 

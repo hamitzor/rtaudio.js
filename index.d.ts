@@ -86,6 +86,9 @@ export declare class RtAudio {
    * 
    * If a stream is not open, an RTAUDIO_WARNING will be passed to the
    * user-provided errorCallback function (or otherwise printed to stderr).
+   * 
+   * This function should **never** be called in the callback function provided to
+   * the stream in `openStream`.
    */
   closeStream(): void
 
@@ -461,6 +464,10 @@ export declare interface StreamParameters {
  * or underflow condition for the stream. The particular
  * condition can be determined by comparison with the
  * RtAudioStreamStatus flags.
+ * 
+ * @returns this function should return either zero or undefined to keep the stream running
+ * or a non-zero value to stop the stream.
+ * 
  */
 export declare type RtAudioCallback =
   (
@@ -468,4 +475,4 @@ export declare type RtAudioCallback =
     input: Uint8Array,
     nFrames: number,
     streamTime: number,
-    status: RtAudioStreamStatus) => void
+    status: RtAudioStreamStatus) => number | undefined

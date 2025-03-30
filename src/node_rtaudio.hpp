@@ -1,14 +1,13 @@
 #ifndef __NODE_ADDON_NODE_RTAUDIO_H__
 #define __NODE_ADDON_NODE_RTAUDIO_H__
 
-#include <napi.h>
 #include <RtAudio.h>
-#include <shared_mutex>
+#include <napi.h>
 #include <queue>
 #include <semaphore>
+#include <shared_mutex>
 
-class NodeRtAudio : public RtAudio, public Napi::ObjectWrap<NodeRtAudio>
-{
+class NodeRtAudio : public RtAudio, public Napi::ObjectWrap<NodeRtAudio> {
 public:
   static Napi::Object Init(Napi::Env env, Napi::Object exports);
 
@@ -43,9 +42,12 @@ public:
   static Napi::Value getCompiledApi(const Napi::CallbackInfo &info);
 
 private:
-  static void parseOutputParams(Napi::Env env, const Napi::Value &val, RtAudio::StreamParameters *params);
-  static void parseInputParams(Napi::Env env, const Napi::Value &val, RtAudio::StreamParameters *params);
-  static void parseStreamOptions(Napi::Env env, const Napi::Value &val, RtAudio::StreamOptions *params);
+  static void parseOutputParams(Napi::Env env, const Napi::Value &val,
+                                RtAudio::StreamParameters *params);
+  static void parseInputParams(Napi::Env env, const Napi::Value &val,
+                               RtAudio::StreamParameters *params);
+  static void parseStreamOptions(Napi::Env env, const Napi::Value &val,
+                                 RtAudio::StreamOptions *params);
   static RtAudio::Api parseApi(Napi::Env env, const Napi::Value &val);
   static unsigned int getFormatByteSize(RtAudioFormat format);
   static bool deviceExists(unsigned int id, const std::vector<unsigned int> &devices);
@@ -61,8 +63,10 @@ private:
   RtAudio::StreamParameters outputParams;
   unsigned int sampleRate;
   unsigned int bufferFrames;
+  int jsCallbackReturnValue;
 
-  // To keep the object alive (even if gets eligible for gc) when open is called, but close hasn't called yet.
+  // To keep the object alive (even if gets eligible for gc) when open is called, but
+  // close hasn't called yet.
   Napi::ObjectReference jsRef;
 };
 

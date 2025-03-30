@@ -7,18 +7,15 @@
 
 <p>
   <a href="https://www.npmjs.com/package/@hamitzor/rtaudio.js">
-    <img src="https://img.shields.io/badge/1.2.0-brightgreen?style=flat&label=npm%20package"
+    <img src="https://img.shields.io/badge/2.1.0-brightgreen?style=flat&label=npm%20package"
          alt="NPM">
   </a>
 </p>
 
 Node binding of the <a href="https://github.com/thestk/rtaudio">RtAudio</a> C++ audio library. To see a detailed description of RtAudio visit it's <a href="https://www.music.mcgill.ca/~gary/rtaudio/">homepage</a> or <a href="https://github.com/thestk/rtaudio">Github repo</a>.
 
-An overview of the binding:
-
-- Access well-known audio APIs
-  - Windows: WASAPI and DirectSound
-  - Linux: PulseAudio
+Features:
+- Runs on Windows, Linux and macOS
 - Probe available audio devices
 - Stream audio to output devices
 - Stream audio from input devices
@@ -30,17 +27,6 @@ An overview of the binding:
 - No additional library/software needed, besides an npm install
 
 ## Installation
-
-A single `npm install` or `yarn add` command is enough for Node between 14.x.x - 21.x.x 
-and Electron between 11.x.x - 28.x.x on x64 Linux and x64 Windows. This should cover most of 
-the installations but if you happen to use a different target/platform, you will have to build 
-the binding yourself (see [Building from source](#building-from-source)).
-
-> **Note**
-> Only Windows and Linux are supported at the moment.
-
-#### Installing for Node 14.x.x - 21.x.x
-
 Install it using `npm` or `yarn`
 
 ```
@@ -55,7 +41,7 @@ yarn add @hamitzor/rtaudio.js
 
 #### Installing for Electron 11.x.x - 28.x.x
 
-If you'll be using the package with Electron, you'll have to set some environment variables before the installation command.
+If you'll be using the package with Electron, you'll have to set some environment variables before the installation.
 
 For example, for Electron v28.0.0
 
@@ -178,6 +164,7 @@ If you don't use Node between 14.x.x - 21.x.x or Electron between 11.x.x - 28.x.
 - A proper C/C++ compiler toolchain
   - For Windows, MSVC should be enough
   - For Linux, GCC or Clang and make
+  - For macOS, regular Xcode stuff
 
 ## Credits
 
